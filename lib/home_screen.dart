@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviesync/api/api.dart';
 import 'package:moviesync/models/movie.dart';
+import 'package:moviesync/widgets/search_bar.dart';
 import 'package:moviesync/widgets/movie_slider.dart';
 import 'package:moviesync/widgets/trending_slider.dart';
 
@@ -13,24 +14,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Movie>> trendingMovies;
-  late Future<List<Movie>> topRatedMovies;
   late Future<List<Movie>> nowPlayingMovies;
   late Future<List<Movie>> upcomingMovies;
   late Future<List<Movie>> kidsMovies;
   late Future<List<Movie>> popularTVShows;
   late Future<List<Movie>> onAirTVShows;
-  
+  late Future<List<Movie>> searchResults;
   
   @override
   void initState() {
     super.initState();
     trendingMovies = Api().getTrendingMovies();
-    topRatedMovies = Api().getTopRatedMovies();
     upcomingMovies = Api().getUpcomingMovies();
     nowPlayingMovies = Api().getNowPlayingMovies();
     kidsMovies = Api().getKidsMovies();
     popularTVShows = Api().getPopularTVShows();
     onAirTVShows = Api().getOnAirTVShows();
+    searchResults = Future.value([]);
   }
 
   @override
@@ -102,7 +102,22 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
+      
+      
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
@@ -130,27 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     } else if (snapshot.hasData) {
                       return TrendingSlider(snapshot: snapshot);
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-
-
-              const SizedBox(height: 30),
-              Text('Top Rated Movies'),
-              const SizedBox(height: 30), 
-              SizedBox(
-                child: FutureBuilder<List<Movie>>(
-                  future: topRatedMovies,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else if (snapshot.hasData) {
-                      return MovieSlider(snapshot: snapshot);
                     } else {
                       return const Center(child: CircularProgressIndicator());
                     }

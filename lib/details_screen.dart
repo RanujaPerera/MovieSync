@@ -52,7 +52,7 @@ class DetailsScreen extends StatelessWidget {
                   ),
                   Positioned(
                     left: 16,
-                    bottom: 4,
+                    bottom: 8,
                     child: Text(
                       movie.title,
                       style: TextStyle(
