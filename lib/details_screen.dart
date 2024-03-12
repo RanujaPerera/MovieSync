@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:moviesync/colors.dart';
 import 'package:moviesync/constants.dart';
 import 'package:moviesync/models/movie.dart';
-import 'package:flutter/material.dart';
+import 'package:moviesync/watchlist_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
@@ -126,6 +127,21 @@ class DetailsScreen extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Add the current movie to the watch list
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WatchListScreen(
+                            watchList: [movie],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text('Add to Watch List'),
                   ),
                 ],
               ),

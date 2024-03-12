@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:moviesync/api/api.dart';
 import 'package:moviesync/models/movie.dart';
+import 'package:moviesync/watchlist_screen.dart';
 import 'package:moviesync/widgets/search_bar.dart';
 import 'package:moviesync/widgets/movie_slider.dart';
 import 'package:moviesync/widgets/trending_slider.dart';
@@ -16,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Movie>> trendingMovies;
   late Future<List<Movie>> nowPlayingMovies;
   late Future<List<Movie>> upcomingMovies;
+  late Future<List<Movie>> bestMovies;
+  late Future<List<Movie>> grossingMovies;
   late Future<List<Movie>> kidsMovies;
   late Future<List<Movie>> popularTVShows;
   late Future<List<Movie>> onAirTVShows;
@@ -25,8 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     trendingMovies = Api().getTrendingMovies();
-    upcomingMovies = Api().getUpcomingMovies();
     nowPlayingMovies = Api().getNowPlayingMovies();
+    upcomingMovies = Api().getUpcomingMovies();
+    bestMovies = Api().getBestMovies();
+    grossingMovies = Api().getGrossingMovies();
     kidsMovies = Api().getKidsMovies();
     popularTVShows = Api().getPopularTVShows();
     onAirTVShows = Api().getOnAirTVShows();
@@ -36,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 240, 98, 73),
+      backgroundColor: Color.fromARGB(255, 6, 3, 45),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -48,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.menu,
+          color: Colors.white),
           onPressed: () {
             showMenu<String>(
               context: context,
@@ -63,14 +70,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text('Watch List'),
                 ),
                 PopupMenuItem<String>(
-                  value: 'Watched List',
-                  child: Text('Watched List'),
-                ),
-                PopupMenuItem<String>(
-                  value: 'Trivia',
-                  child: Text('Trivia'),
-                ),
-                PopupMenuItem<String>(
                   value: 'Quit',
                   child: Text('Quit'),
                 ),
@@ -81,19 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 // Handle menu item selection here
                 switch (value) {
                   case 'Home':
-                    // Handle Home button
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomeScreen()));
                     break;
                   case 'Watch List':
-                    // Handle Watch List button
-                    break;
-                  case 'Watched List':
-                    // Handle Watched List button
-                    break;
-                  case 'Trivia':
-                    // Handle Trivia button
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const WatchListScreen(watchList: [],)),
+                  );
                     break;
                   case 'Quit':
-                    // Handle Quit button
+                    SystemNavigator.pop();
                     break;
                   default:
                     break;
@@ -104,7 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+              ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -128,12 +129,18 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 'Movies',
                 style: TextStyle(
-                  fontSize: 24, // Adjust the font size as desired
+                  fontSize: 48, // Adjust the font size as desired
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ), 
               const SizedBox(height: 30),
-              Text('Trending Movies'),
+              Text(
+                'Trending Movies',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 30),
               SizedBox(
                 child: FutureBuilder<List<Movie>>(
@@ -153,7 +160,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               const SizedBox(height: 30),
-              Text('Now Playing'),
+              Text(
+                'Now Playing',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 30), 
               SizedBox(
                 child: FutureBuilder<List<Movie>>(
@@ -174,7 +186,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
               const SizedBox(height: 30),
-              Text('Upcoming Movies'),
+              Text(
+                'Upcoming Movies',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 30), 
               SizedBox(
                 child: FutureBuilder<List<Movie>>(
@@ -194,7 +211,62 @@ class _HomeScreenState extends State<HomeScreen> {
               ), 
 
               const SizedBox(height: 30),
-              Text('Kids Movies'),
+              Text(
+                'Best Movies 2024',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 30), 
+              SizedBox(
+                child: FutureBuilder<List<Movie>>(
+                  future: bestMovies,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString()),
+                      );
+                    } else if (snapshot.hasData) {
+                      return MovieSlider(snapshot: snapshot);
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 30),
+              Text(
+                'Grossing Movies',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 30), 
+              SizedBox(
+                child: FutureBuilder<List<Movie>>(
+                  future: grossingMovies,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString()),
+                      );
+                    } else if (snapshot.hasData) {
+                      return MovieSlider(snapshot: snapshot);
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              ), 
+
+              const SizedBox(height: 30),
+              Text(
+                'Kids Movies',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 30), 
               SizedBox(
                 child: FutureBuilder<List<Movie>>(
@@ -217,12 +289,18 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 'TV Shows',
                 style: TextStyle(
-                  fontSize: 24, // Adjust the font size as desired
+                  fontSize: 48, // Adjust the font size as desired
                   fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 30),
-              Text('Popular TV Shows'),
+              Text(
+                'Popular Tv Shows',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 30), 
               SizedBox(
                 child: FutureBuilder<List<Movie>>(
@@ -242,7 +320,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ), 
 
               const SizedBox(height: 30),
-              Text('On Air TV Shows'),
+              Text(
+                'On Air TV Shows',
+                  style: TextStyle(
+                   color: Colors.white,
+                ),
+              ),
               const SizedBox(height: 30), 
               SizedBox(
                 child: FutureBuilder<List<Movie>>(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "523281483377",
+    "project_id": "moviesyncapp",
+    "storage_bucket": "moviesyncapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523281483377:android:b2a0701a89d90775e2fdd0",
+        "android_client_info": {
+          "package_name": "com.example.moviesync"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGrez2ePNOAchKlz4MxbizNwGVj75erNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

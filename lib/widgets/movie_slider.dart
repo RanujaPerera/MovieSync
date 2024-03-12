@@ -16,23 +16,22 @@ class MovieSlider extends StatelessWidget {
     return SizedBox(
       height: 200,
       width: double.infinity,
-      child: ListView.builder(
+      child: ListView( // Wrap with ListView
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        itemCount: snapshot.data!.length,
-        itemBuilder: (context, index) {
+        children: List.generate(snapshot.data!.length, (index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: (){
                 Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => DetailsScreen(
-                  movie: snapshot.data![index],
-              ),
-              ),
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(
+                      movie: snapshot.data![index],
+                    ),
+                  ),
+                );
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
@@ -48,7 +47,7 @@ class MovieSlider extends StatelessWidget {
               ),
             ),
           );
-        },
+        }),
       ),
     );
   }

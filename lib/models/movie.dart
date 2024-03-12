@@ -15,20 +15,30 @@ class Movie {
     required this.posterPath,
     required this.releaseDate,
     required this.voteAverage,
-});
+  });
 
-factory Movie.fromJson(Map<String, dynamic> json)  {
-  return Movie(
-    title: json["title"] ?? "",
-    backDropPath: json["backDrop_path"] ?? "",
-    originalTitle: json["original_title"] ?? "",
-    overview: json["overview"] ?? "",
-    posterPath: json["poster_path"] ?? "",
-    releaseDate: json["release_date"] ?? "",
-    voteAverage: (json["vote_average"] as num?)?.toDouble() ?? 0.0,
-  );
-}
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      title: json["title"] ?? "",
+      backDropPath: json["backDrop_path"] ?? "",
+      originalTitle: json["original_title"] ?? "",
+      overview: json["overview"] ?? "",
+      posterPath: json["poster_path"] ?? "",
+      releaseDate: json["release_date"] ?? "",
+      voteAverage: (json["vote_average"] as num?)?.toDouble() ?? 0.0,
+    );
+  }
 
-
-
+  // Serialize the Movie object to a JSON object
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'backDropPath': backDropPath,
+      'originalTitle': originalTitle,
+      'overview': overview,
+      'posterPath': posterPath,
+      'releaseDate': releaseDate,
+      'voteAverage': voteAverage,
+    };
+  }
 }
