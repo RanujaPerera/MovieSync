@@ -8,13 +8,16 @@ import 'package:moviesync/widgets/movie_slider.dart';
 import 'package:moviesync/widgets/trending_slider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+ 
 class _HomeScreenState extends State<HomeScreen> {
+
+  
   late Future<List<Movie>> trendingMovies;
   late Future<List<Movie>> nowPlayingMovies;
   late Future<List<Movie>> upcomingMovies;
@@ -82,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   case 'Home':
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomeScreen()));
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                     break;
                   case 'Watch List':
                     Navigator.push(
