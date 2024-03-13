@@ -1,8 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:moviesync/home_screen.dart';
+import 'package:moviesync/auth_gate.dart';
+import 'package:moviesync/firebase_options.dart';
 
-void main() {
- 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -14,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  HomeScreen(),
+      home: const AuthGate(),
     );
   }
 }
