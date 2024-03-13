@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:moviesync/api/api.dart';
 import 'package:moviesync/models/movie.dart';
 import 'package:moviesync/watchlist_screen.dart';
-import 'package:moviesync/widgets/search_bar.dart';
+import 'package:moviesync/search_screen.dart';
 import 'package:moviesync/widgets/movie_slider.dart';
 import 'package:moviesync/widgets/trending_slider.dart';
 
