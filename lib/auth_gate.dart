@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moviesync/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class AuthGate extends StatefulWidget {
   const AuthGate({Key? key}) : super(key: key);
 
   @override
   _AuthGateState createState() => _AuthGateState();
+
+  static void saveRememberMe(bool rememberMe) {
+    _AuthGateState()._saveRememberMe(rememberMe);
+}
 }
 
 class _AuthGateState extends State<AuthGate> {

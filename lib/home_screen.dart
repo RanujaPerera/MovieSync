@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moviesync/api/api.dart';
+import 'package:moviesync/auth_gate.dart';
 import 'package:moviesync/models/movie.dart';
 import 'package:moviesync/watchlist_screen.dart';
 import 'package:moviesync/search_screen.dart';
@@ -66,21 +67,18 @@ class _HomeScreenState extends State<HomeScreen> {
               context: context,
               position: RelativeRect.fromLTRB(0, 100, 0, 0),
               items: <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  value: 'Home',
-                  child: Text('Home'),
-                ),
+                
                 PopupMenuItem<String>(
                   value: 'Watch List',
                   child: Text('Watch List'),
                 ),
                 PopupMenuItem<String>(
-                  value: 'Quit',
-                  child: Text('Quit'),
-                ),
-                PopupMenuItem<String>(
                   value: 'Sign Out',
                   child: Text('Sign Out'),
+                ),
+                PopupMenuItem<String>(
+                  value: 'Quit',
+                  child: Text('Quit'),
                 ),
               ],
               elevation: 8.0,
@@ -88,22 +86,22 @@ class _HomeScreenState extends State<HomeScreen> {
               if (value != null) {
                 // Handle menu item selection here
                 switch (value) {
-                  case 'Home':
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
-                    break;
                   case 'Watch List':
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>WatchListScreen(watchList: [],)),
                   );
                     break;
-                  case 'Quit':
-                    SystemNavigator.pop();
-                    break;
+                  
                     case 'Sign Out':
-                    
+  AuthGate.saveRememberMe(false); // Set rememberMe to false
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => AuthGate()),
+  );
+  break;
+  case 'Quit':
+                    SystemNavigator.pop();
                     break;
                   default:
                     break;
