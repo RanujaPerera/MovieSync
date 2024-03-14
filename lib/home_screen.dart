@@ -78,6 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   value: 'Quit',
                   child: Text('Quit'),
                 ),
+                PopupMenuItem<String>(
+                  value: 'Sign Out',
+                  child: Text('Sign Out'),
+                ),
               ],
               elevation: 8.0,
             ).then((String? value) {
@@ -97,6 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     break;
                   case 'Quit':
                     SystemNavigator.pop();
+                    break;
+                    case 'Sign Out':
+                    
                     break;
                   default:
                     break;

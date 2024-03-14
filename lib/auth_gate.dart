@@ -19,6 +19,10 @@ class _AuthGateState extends State<AuthGate> {
     _loadRememberMe();
   }
 
+static void saveRememberMe(bool rememberMe) {
+    _AuthGateState()._saveRememberMe(rememberMe);
+  }
+  
   void _loadRememberMe() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -36,17 +40,17 @@ class _AuthGateState extends State<AuthGate> {
     }
   }
 
-  void _saveRememberMe() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('rememberMe', _rememberMe);
-    if (_rememberMe) {
-      prefs.setString('username', _emailController.text);
-      prefs.setString('password', _passwordController.text);
-    } else {
-      prefs.remove('username');
-      prefs.remove('password');
-    }
+  void _saveRememberMe(bool rememberMe) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool('rememberMe', rememberMe);
+  if (rememberMe) {
+    prefs.setString('username', _emailController.text);
+    prefs.setString('password', _passwordController.text);
+  } else {
+    prefs.remove('username');
+    prefs.remove('password');
   }
+}
 
   @override
 Widget build(BuildContext context) {
@@ -130,7 +134,7 @@ Widget build(BuildContext context) {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    _saveRememberMe(); // Save remember me status
+                    _saveRememberMe(_rememberMe); // Save remember me status
                     // Navigate to Home Screen
                     Navigator.pushReplacement(
                       context,
