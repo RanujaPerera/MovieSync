@@ -51,9 +51,20 @@ class _SearchScreenState extends State<SearchScreen> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
-      return data['results'] ?? [];
+      final actorId = data['results'][0]['id'];
+      final actorMoviesResponse = await http.get(
+        Uri.parse(
+          'https://api.themoviedb.org/3/discover/movie?with_cast=$actorId&api_key=${Constants.apiKey}',
+        ),
+      );
+      if (actorMoviesResponse.statusCode == 200) {
+        final Map<String, dynamic> actorMoviesData = jsonDecode(actorMoviesResponse.body);
+        return actorMoviesData['results'] ?? [];
+      } else {
+        throw Exception('Failed to search movies by actor');
+      }
     } else {
-      throw Exception('Failed to search movies by actor');
+      throw Exception('Failed to search for actor');
     }
   }
 
@@ -91,8 +102,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   // Display actor
                   return ListTile(
                     title: Text(item['name']),
-                    // Add onTap to show actor details or navigate to actor's movies
-                    // onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        _searchResults = _searchMoviesByActor(item['name']);
+                      });
+                    },
                   );
                 } else {
                   // Display movie or TV show
@@ -118,8 +132,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailsScreen(
-                            // Pass movie or TV show object to details screen
-                            // Modify this based on your Movie model structure
                             movie: Movie.fromJson(item),
                           ),
                         ),
