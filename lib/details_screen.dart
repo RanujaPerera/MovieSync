@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviesync/colors.dart';
 import 'package:moviesync/constants.dart';
+import 'package:moviesync/shared_preferences_util.dart';
 import 'package:moviesync/models/movie.dart';
 import 'package:moviesync/watchlist_screen.dart';
 
@@ -130,14 +131,15 @@ class DetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // Add the current movie to the watch list
+                      final List<Movie> watchList = await SharedPreferencesUtil.loadWatchList();
+                      watchList.add(movie);
+                      await SharedPreferencesUtil.saveWatchList(watchList); // Save updated watch list
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => WatchListScreen(
-                            watchList: [movie],
-                          ),
+                          builder: (context) => WatchListScreen(watchList: watchList),
                         ),
                       );
                     },
