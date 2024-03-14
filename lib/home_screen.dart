@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<Movie>> popularTVShows;
   late Future<List<Movie>> onAirTVShows;
   late Future<List<Movie>> searchResults;
+  late Future<List<Movie>> actorResults;
   
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     popularTVShows = Api().getPopularTVShows();
     onAirTVShows = Api().getOnAirTVShows();
     searchResults = Future.value([]);
+    actorResults = Future.value([]);
   }
 
   @override
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   case 'Watch List':
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const WatchListScreen(watchList: [],)),
+                      MaterialPageRoute(builder: (context) =>WatchListScreen(watchList: [],)),
                   );
                     break;
                   case 'Quit':

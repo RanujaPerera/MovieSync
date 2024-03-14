@@ -56,20 +56,11 @@ class _WatchListScreenState extends State<WatchListScreen> {
                 height: MediaQuery.of(context).size.width / 2 * (9 / 16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
+                  image: DecorationImage(
+                    image: NetworkImage('${Constants.imagePath}${movie.posterPath}'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: ClipRRect(
-  borderRadius: BorderRadius.circular(8.0),
-  child: Image.network(
-    '${Constants.imagePath}${movie.posterPath}',
-    fit: BoxFit.cover,
-    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-      print('Failed to load image: $exception\n$stackTrace');
-      return Center(
-        child: Text('Failed to load image'),
-      );
-    },
-  ),
-),
               ),
               footer: GridTileBar(
                 backgroundColor: Colors.black45,

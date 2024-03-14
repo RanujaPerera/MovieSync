@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:moviesync/constants.dart';
-import 'package:moviesync/models/movie.dart';
 import 'package:http/http.dart' as http;
 import 'package:moviesync/details_screen.dart';
+import 'package:moviesync/models/movie.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   late TextEditingController _searchController;
-  late Future<List<Movie>> _searchResults;
+  late Future<List<dynamic>> _searchResults;
 
   @override
   void initState() {
@@ -27,9 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 
-  Future<List<Movie>> _searchMovies(String query) async {
-    final List<Movie> searchResults = [];
-
+  Future<List<dynamic>> _searchMovies(String query) async {
     final response = await http.get(
       Uri.parse(
         'https://api.themoviedb.org/3/search/multi?query=$query&api_key=${Constants.apiKey}',
@@ -38,13 +36,25 @@ class _SearchScreenState extends State<SearchScreen> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
-      final List<dynamic> results = data['results'] ?? [];
-      searchResults.addAll(results.map((json) => Movie.fromJson(json)).toList());
+      return data['results'] ?? [];
     } else {
       throw Exception('Failed to search movies, TV shows, and actors');
     }
+  }
 
-    return searchResults;
+  Future<List<dynamic>> _searchMoviesByActor(String actorName) async {
+    final response = await http.get(
+      Uri.parse(
+        'https://api.themoviedb.org/3/search/person?query=$actorName&api_key=${Constants.apiKey}',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return data['results'] ?? [];
+    } else {
+      throw Exception('Failed to search movies by actor');
+    }
   }
 
   @override
@@ -58,12 +68,12 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           onChanged: (query) {
             setState(() {
-              _searchResults = _searchMovies(query);
+              _searchResults = query.isEmpty ? Future.value([]) : _searchMovies(query);
             });
           },
         ),
       ),
-      body: FutureBuilder<List<Movie>>(
+      body: FutureBuilder<List<dynamic>>(
         future: _searchResults,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -76,30 +86,47 @@ class _SearchScreenState extends State<SearchScreen> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                final movie = snapshot.data![index];
-                return ListTile(
-                  leading: movie.posterPath.isNotEmpty
-                      ? Image.network(
-                          'https://image.tmdb.org/t/p/w200${movie.posterPath}',
-                          width: 50,
-                        )
-                      : Container(
-                          width: 50,
-                          height: 75,
-                          color: Colors.grey,
-                          child: Icon(Icons.movie),
+                final item = snapshot.data![index];
+                if (item['media_type'] == 'person') {
+                  // Display actor
+                  return ListTile(
+                    title: Text(item['name']),
+                    // Add onTap to show actor details or navigate to actor's movies
+                    // onTap: () {},
+                  );
+                } else {
+                  // Display movie or TV show
+                  final title = item['title'] ?? item['name'] ?? 'Unknown';
+                  final posterPath = item['poster_path'] ?? '';
+                  return ListTile(
+                    leading: posterPath.isNotEmpty
+                        ? Image.network(
+                            'https://image.tmdb.org/t/p/w200$posterPath',
+                            width: 50,
+                          )
+                        : Container(
+                            width: 50,
+                            height: 75,
+                            color: Colors.grey,
+                            child: Icon(Icons.movie),
+                          ),
+                    title: Text(title),
+                    subtitle: Text('Rating: ${item['vote_average']?.toString() ?? 'N/A'}'),
+                    onTap: () {
+                      // Navigate to movie or TV show details screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                            // Pass movie or TV show object to details screen
+                            // Modify this based on your Movie model structure
+                            movie: Movie.fromJson(item),
+                          ),
                         ),
-                  title: Text(movie.title),
-                  subtitle: Text('Rating: ${movie.voteAverage.toString()}'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailsScreen(movie: movie),
-                      ),
-                    );
-                  },
-                );
+                      );
+                    },
+                  );
+                }
               },
             );
           } else {

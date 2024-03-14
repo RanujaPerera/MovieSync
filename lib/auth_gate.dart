@@ -9,7 +9,7 @@ class AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<AuthGate> {
-  late TextEditingController _usernameController = TextEditingController();
+  late TextEditingController _emailController = TextEditingController();
   late TextEditingController _passwordController = TextEditingController();
   late bool _rememberMe = false;
 
@@ -40,7 +40,7 @@ class _AuthGateState extends State<AuthGate> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('rememberMe', _rememberMe);
     if (_rememberMe) {
-      prefs.setString('username', _usernameController.text);
+      prefs.setString('username', _emailController.text);
       prefs.setString('password', _passwordController.text);
     } else {
       prefs.remove('username');
@@ -52,12 +52,15 @@ class _AuthGateState extends State<AuthGate> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text('Welcome to MovieSync',
-      style: TextStyle(
-        fontSize: 60,
-        fontWeight: FontWeight.bold,
-      )),
+      title: Text(
+        'Welcome to MovieSync',
+        style: TextStyle(
+          fontSize: 60,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     ),
+    backgroundColor: Color.fromARGB(255, 6, 3, 45), // Set background color to dark blue
     body: Padding(
       padding: EdgeInsets.all(16.0),
       child: Row(
@@ -79,17 +82,33 @@ Widget build(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _usernameController,
+                  controller: _emailController,
                   decoration: InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'Email',
+                    labelStyle: TextStyle(color: Colors.white), // Set label text color to white
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white), // Set border color to white
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white), // Set border color to white
+                    ),
                   ),
+                  style: TextStyle(color: Colors.white), // Set text color to white
                 ),
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.white), // Set label text color to white
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white), // Set border color to white
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white), // Set border color to white
+                    ),
                   ),
+                  style: TextStyle(color: Colors.white), // Set text color to white
                 ),
                 Row(
                   children: [
@@ -100,8 +119,12 @@ Widget build(BuildContext context) {
                           _rememberMe = value!;
                         });
                       },
+                      checkColor: Colors.white, // Set check color to white
                     ),
-                    Text('Remember Me'),
+                    Text(
+                      'Remember Me',
+                      style: TextStyle(color: Colors.white), // Set text color to white
+                    ),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -116,7 +139,10 @@ Widget build(BuildContext context) {
                       ),
                     );
                   },
-                  child: Text('Login'),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Color.fromARGB(255, 6, 3, 45)), // Set button text color to white
+                  ),
                 ),
               ],
             ),

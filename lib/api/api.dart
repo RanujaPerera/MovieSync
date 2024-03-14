@@ -8,8 +8,8 @@ class Api {
   static const _trendingUrl = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.apiKey}';
   static const _nowPlayingUrl = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.apiKey}';
   static const _upcomingUrl = 'https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.apiKey}';
-  static const _bestMoviesUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&primary_release_year=2024&sort_by=popularity.desc';
-  static const _highestGrossUrl = 'https://api.themoviedb.org/3/movie/popular?api_key=${Constants.apiKey}&page=1&sort_by=popularity.desc';
+  static const _bestMoviesUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&primary_release_year=2024&sort_by=vote_average.desc';
+  static const _highestGrossUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&sort_by=revenue.desc';
   static const _kidsMoviesUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.apiKey}&certification_country=US&certification=PG';
   static const _popularTVUrl = 'https://api.themoviedb.org/3/tv/popular?api_key=${Constants.apiKey}';
   static const _onAirTVUrl = 'https://api.themoviedb.org/3/tv/airing_today?api_key=${Constants.apiKey}';
