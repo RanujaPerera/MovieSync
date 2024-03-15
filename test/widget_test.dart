@@ -18,7 +18,7 @@ void main() {
     // Verify that the 'TV Shows' text is displayed
     expect(find.text('TV Shows'), findsOneWidget);
   });
-
+  
   testWidgets('Trending Movies section displays properly', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(home: HomeScreen()));
 

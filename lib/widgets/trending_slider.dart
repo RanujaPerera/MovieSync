@@ -6,11 +6,11 @@ import 'package:moviesync/details_screen.dart';
 
 class TrendingSlider extends StatelessWidget {
   const TrendingSlider({
-    Key? key, // Fix key declaration
+    Key? key,
     required this.snapshot,
   }) : super(key: key);
 
-  final AsyncSnapshot<List<Movie>> snapshot; // Specify the generic type as List<Movie>
+  final AsyncSnapshot<List<Movie>> snapshot; 
 
   @override
   Widget build(BuildContext context) {
