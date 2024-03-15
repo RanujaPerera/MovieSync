@@ -3,8 +3,8 @@ import 'package:moviesync/models/movie.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class Api {
+  // Define URLs for different API endpoints
   static const _trendingUrl = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.apiKey}';
   static const _nowPlayingUrl = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.apiKey}';
   static const _upcomingUrl = 'https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.apiKey}';
@@ -14,84 +14,91 @@ class Api {
   static const _popularTVUrl = 'https://api.themoviedb.org/3/tv/popular?api_key=${Constants.apiKey}';
   static const _onAirTVUrl = 'https://api.themoviedb.org/3/tv/airing_today?api_key=${Constants.apiKey}';
   
-
-Future<List<Movie>> getTrendingMovies() async {
-  final response = await http.get(Uri.parse(_trendingUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch trending movies from the API
+  Future<List<Movie>> getTrendingMovies() async {
+    final response = await http.get(Uri.parse(_trendingUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getNowPlayingMovies() async {
-  final response = await http.get(Uri.parse(_nowPlayingUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch now playing movies from the API
+  Future<List<Movie>> getNowPlayingMovies() async {
+    final response = await http.get(Uri.parse(_nowPlayingUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getUpcomingMovies() async {
-  final response = await http.get(Uri.parse(_upcomingUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch upcoming movies from the API
+  Future<List<Movie>> getUpcomingMovies() async {
+    final response = await http.get(Uri.parse(_upcomingUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getBestMovies() async {
-  final response = await http.get(Uri.parse(_bestMoviesUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch best movies from the API
+  Future<List<Movie>> getBestMovies() async {
+    final response = await http.get(Uri.parse(_bestMoviesUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getGrossingMovies() async {
-  final response = await http.get(Uri.parse(_highestGrossUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch highest grossing movies from the API
+  Future<List<Movie>> getGrossingMovies() async {
+    final response = await http.get(Uri.parse(_highestGrossUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getKidsMovies() async {
-  final response = await http.get(Uri.parse(_kidsMoviesUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch kids movies from the API
+  Future<List<Movie>> getKidsMovies() async {
+    final response = await http.get(Uri.parse(_kidsMoviesUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getPopularTVShows() async {
-  final response = await http.get(Uri.parse(_popularTVUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch popular TV shows from the API
+  Future<List<Movie>> getPopularTVShows() async {
+    final response = await http.get(Uri.parse(_popularTVUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 
-Future<List<Movie>> getOnAirTVShows() async {
-  final response = await http.get(Uri.parse(_onAirTVUrl));
-  if (response.statusCode == 200) {
-    final decodedData = json.decode(response.body)['results'] as List;
-    return decodedData.map((movie) => Movie.fromJson(movie)).toList();
-  }else{
-    throw Exception ('Something went wrong');
+  // Function to fetch on air TV shows from the API
+  Future<List<Movie>> getOnAirTVShows() async {
+    final response = await http.get(Uri.parse(_onAirTVUrl));
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+    } else {
+      throw Exception('Something went wrong');
+    }
   }
-}
 }
